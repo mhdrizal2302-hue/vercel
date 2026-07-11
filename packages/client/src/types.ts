@@ -210,6 +210,7 @@ export interface VercelConfig {
   images?: Images;
   crons?: Cron[];
   bunVersion?: string;
+  fastapiStaticCDN?: boolean;
   /**
    * Path to a file containing bulk redirects (relative to the project root).
    * This file will be included in prebuilt deployments.

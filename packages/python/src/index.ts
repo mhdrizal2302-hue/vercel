@@ -24,6 +24,7 @@ import {
   BUILDER_PRE_DEPLOY_STEP,
   getLambdaOptionsFromFunction,
   type BuildOptions,
+  type Config,
   type GlobOptions,
   type BuildVX,
   type DevSubscriber,
@@ -326,6 +327,7 @@ interface FrameworkHookContext {
   venvPath?: string;
   entrypoint: string | undefined;
   detected: DetectedPythonEntrypoint | undefined;
+  config: Config;
 }
 
 interface FrameworkHookResult {
@@ -440,7 +442,12 @@ const frameworkHooks: Partial<Record<PythonFramework, FrameworkHook>> = {
     detected,
     workPath,
     venvPath,
+    config,
   }): Promise<FastAPIFrameworkHookResult | void> => {
+    if (config.fastapiStaticCDN === false) {
+      debug('FastAPI: fastapiStaticCDN=false, skipping static CDN collection');
+      return;
+    }
     if (!detected?.entrypoint || !workPath || !venvPath) {
       debug(
         `FastAPI hook: skipping — detected.entrypoint=${JSON.stringify(detected?.entrypoint)}, workPath=${workPath}, venvPath=${venvPath}`
@@ -1073,6 +1080,7 @@ export const build: BuildVX = async ({
     venvPath,
     entrypoint,
     detected,
+    config,
   });
 
   // Collect the resolved entrypoint from detection or hook, preferring the

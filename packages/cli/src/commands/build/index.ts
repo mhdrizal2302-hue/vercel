@@ -1290,6 +1290,7 @@ async function doBuild(
               framework: builderFramework,
               nodeVersion: projectSettings.nodeVersion,
               bunVersion: localConfig.bunVersion ?? undefined,
+              fastapiStaticCDN: localConfig.fastapiStaticCDN ?? undefined,
             };
           } else {
             buildConfig = {
@@ -1302,12 +1303,14 @@ async function doBuild(
               framework: projectSettings.framework,
               nodeVersion: projectSettings.nodeVersion,
               bunVersion: localConfig.bunVersion ?? undefined,
+              fastapiStaticCDN: localConfig.fastapiStaticCDN ?? undefined,
             };
           }
         } else {
           buildConfig = {
             ...(build.config || {}),
             bunVersion: localConfig.bunVersion ?? undefined,
+            fastapiStaticCDN: localConfig.fastapiStaticCDN ?? undefined,
           };
         }
 

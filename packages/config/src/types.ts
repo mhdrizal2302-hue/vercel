@@ -565,6 +565,10 @@ export interface VercelConfig {
    */
   bunVersion?: string;
   /**
+   * When false, disables automatic CDN static file collection for FastAPI projects.
+   */
+  fastapiStaticCDN?: boolean;
+  /**
    * Enables configuration of multiple services in a single deployment. Map of service name to service configuration.
    * @private
    */

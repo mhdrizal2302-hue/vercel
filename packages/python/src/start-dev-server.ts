@@ -742,6 +742,7 @@ export const startDevServer: StartDevServer = async opts => {
       workPath,
       entrypoint,
       detected: detected ?? undefined,
+      config: {},
     });
     resolved = hookResult?.entrypoint;
   }
