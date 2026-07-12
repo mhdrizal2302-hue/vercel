@@ -79,12 +79,7 @@ export async function ensureLink(
       opts.failIfNotFound &&
       opts.projectName
     ) {
-      await printProjectNotFoundError(
-        client,
-        opts.projectName,
-        commandName,
-        link.orgId
-      );
+      await printProjectNotFoundError(client, opts.projectName, link.orgId);
       return 1;
     }
 

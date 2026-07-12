@@ -265,6 +265,45 @@ export function buildCommandWithGlobalFlags(
 }
 
 /**
+ * Rebuilds the invoking command for a project-not-found retry. Project and
+ * scope selectors are replaced only on the CLI side of a `--` separator so
+ * required operands and child-command arguments remain intact.
+ */
+export function buildProjectRetryCommand(
+  argv: string[],
+  projectNameOrId: string,
+  scope = '<team-slug>'
+): string {
+  const args = stripSensitiveAuthArgs(argv.slice(2));
+  const separatorIndex = args.indexOf('--');
+  const commandArgs =
+    separatorIndex === -1 ? args : args.slice(0, separatorIndex);
+  const childArgs = separatorIndex === -1 ? [] : args.slice(separatorIndex + 1);
+  const selectors = new Set(['--project', '--scope', '--team', '-S', '-T']);
+  const preserved: string[] = [];
+
+  for (let i = 0; i < commandArgs.length; i++) {
+    const arg = commandArgs[i];
+    const name = arg.includes('=') ? arg.slice(0, arg.indexOf('=')) : arg;
+    if (selectors.has(name)) {
+      if (!arg.includes('=') && i + 1 < commandArgs.length) {
+        i++;
+      }
+      continue;
+    }
+    preserved.push(arg);
+  }
+
+  preserved.push('--project', projectNameOrId);
+  let command = `${packageName} ${preserved.join(' ')} --scope ${scope}`;
+  if (separatorIndex !== -1) {
+    command += ` -- ${childArgs.join(' ')}`;
+  }
+
+  return command;
+}
+
+/**
  * Returns args that should be preserved when suggesting a "next" command for "env add".
  * These are all args after "env add" and its 0–3 positionals (name, target, git-branch).
  */
