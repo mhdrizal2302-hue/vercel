@@ -39,6 +39,13 @@
   "files": [
     "dist"
   ],
+  "optionalDependencies": {
+    "@vercel/vc-native-darwin-arm64": "55.0.0",
+    "@vercel/vc-native-darwin-x64": "55.0.0",
+    "@vercel/vc-native-linux-arm64": "55.0.0",
+    "@vercel/vc-native-linux-x64": "55.0.0",
+    "@vercel/vc-native-win32-x64": "55.0.0"
+  },
   "engines": {
     "node": ">= 18"
   },
